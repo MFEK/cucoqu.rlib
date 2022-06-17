@@ -1,0 +1,17 @@
+[package]
+name = "cucoqu"
+version = "0.1.0"
+authors = ["Fredrick Brennan <copypaste@kittens.ph>", "MFEK Authors", "GPT-3"]
+edition = "2021"
+license = "Apache-2.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+num-complex = "0.4"
+num-traits = "0.2"
+#glifparser = { git = "https://github.com/MFEK/glifparser.rlib", default_features = false, features=["num-traits"] }
+glifparser = { path = "../glifparser.rlib", default_features = false, features=["more-iof"] }
+nalgebra = "0.31"
+derive_more = "0.99"
+log = "0.4"
