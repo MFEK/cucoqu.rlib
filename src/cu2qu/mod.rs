@@ -2,7 +2,7 @@
 use std::{error::Error, fmt};
 
 use crate::point;
-use crate::types::{Quad, QuadSpline, Cubic, Point};
+use crate::types::{Cubic, Point, Quad, QuadSpline};
 
 // We won't divide any cubic over 100 times
 const MAX_N: usize = 100;
@@ -39,10 +39,7 @@ pub struct ApproxNotFoundError;
 
 impl fmt::Display for ApproxNotFoundError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "ApproxNotFoundError: Could not approximate cubic curve with a quadratic"
-        )?;
+        write!(f, "ApproxNotFoundError: Could not approximate cubic curve with a quadratic")?;
         Ok(())
     }
 }
@@ -109,12 +106,7 @@ impl CubicApprox for Cubic {
         let c3 = self[3];
         let c1 = c0 + (q1 - c0) * (2.0 / 3.0);
         let c2 = c3 + (q1 - c3) * (2.0 / 3.0);
-        let cubic = [
-            point![0.0, 0.0],
-            c1 - self[1],
-            c2 - self[2],
-            point![0.0, 0.0],
-        ];
+        let cubic = [point![0.0, 0.0], c1 - self[1], c2 - self[2], point![0.0, 0.0]];
         if !cubic.farthest_fit_inside(tolerance) {
             return Err(ApproxNotFoundError);
         }
@@ -149,13 +141,7 @@ impl CubicApprox for Cubic {
             let d0 = d1;
             d1 = q2 - c3;
             if d1.norm_squared() > tolerance
-                || ![
-                    d0,
-                    q0 + (q1 - q0) * (2.0 / 3.0) - c1,
-                    q2 + (q1 - q2) * (2.0 / 3.0) - c2,
-                    d1,
-                ]
-                .farthest_fit_inside(tolerance)
+                || ![d0, q0 + (q1 - q0) * (2.0 / 3.0) - c1, q2 + (q1 - q2) * (2.0 / 3.0) - c2, d1].farthest_fit_inside(tolerance)
             {
                 return Err(ApproxNotFoundError);
             }
@@ -166,7 +152,7 @@ impl CubicApprox for Cubic {
         let mut prev = iter.next().unwrap();
         let mut cur_spline = vec![];
         while let Some(n) = iter.next() {
-            let p_ = iter.peek().map(|p|p.clone());
+            let p_ = iter.peek().map(|p| p.clone());
             if let Some(p) = p_ {
                 cur_spline.push(prev);
                 cur_spline.push(n);
@@ -208,10 +194,8 @@ impl CubicFarthestFitInside for Cubic {
             return false;
         }
         let deriv3 = (p3 + p2 - p1 - p0) * 0.125;
-        let inside1 =
-            Cubic::farthest_fit_inside(&[p0, (p0 + p1) * 0.5, mid - deriv3, mid], tolerance);
-        let inside2 =
-            Cubic::farthest_fit_inside(&[mid, mid + deriv3, (p2 + p3) * 0.5, p3], tolerance);
+        let inside1 = Cubic::farthest_fit_inside(&[p0, (p0 + p1) * 0.5, mid - deriv3, mid], tolerance);
+        let inside2 = Cubic::farthest_fit_inside(&[mid, mid + deriv3, (p2 + p3) * 0.5, p3], tolerance);
         inside1 && inside2
     }
 }
@@ -235,17 +219,11 @@ impl CurveToQuadratic for Cubic {
 
 /// Convert a vector of cubic Bézier curves to a vector of quadratic spline segments.
 pub trait CurvesToQuadratic {
-    fn curves_to_quadratic(
-        &self,
-        max_errors: Vec<f32>,
-    ) -> Result<Vec<QuadSpline>, ApproxNotFoundError>;
+    fn curves_to_quadratic(&self, max_errors: Vec<f32>) -> Result<Vec<QuadSpline>, ApproxNotFoundError>;
 }
 
 impl CurvesToQuadratic for Vec<Cubic> {
-    fn curves_to_quadratic(
-        &self,
-        max_errors: Vec<f32>,
-    ) -> Result<Vec<QuadSpline>, ApproxNotFoundError> {
+    fn curves_to_quadratic(&self, max_errors: Vec<f32>) -> Result<Vec<QuadSpline>, ApproxNotFoundError> {
         debug_assert_eq!(self.len(), max_errors.len());
         let l = self.len();
         let mut splines = vec![None; l];
@@ -269,10 +247,7 @@ impl CurvesToQuadratic for Vec<Cubic> {
             i = (i + 1) % l;
             if i == last_i {
                 //done
-                return Ok(splines
-                    .into_iter()
-                    .map(|maybe| maybe.expect("Should not get a None"))
-                    .collect());
+                return Ok(splines.into_iter().map(|maybe| maybe.expect("Should not get a None")).collect());
             }
         }
         Err(ApproxNotFoundError)

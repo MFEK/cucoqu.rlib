@@ -2,7 +2,7 @@
 
 <img src="blob/cucoqu.png" width="250">
 
-(c) 2022 Fredrick R. Brennan, MFEK Authors, and GPT-3
+(c) 2022 Fredrick R. Brennan, MFEK Authors, Skia Authors, and GPT-3
 
 **cucoqu** is a Rust library for converting between different types of Bézier splines. Currently it only supports the types most commonly used in type design and drawing curves: **cu**bic Bézier curves, **qu**adratic Bézier curves, and one type of rational Bézier curve: **co**nic Bézier curves.
 

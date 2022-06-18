@@ -1,5 +1,5 @@
-use crate::types::Point;
 use crate::point;
+use crate::types::Point;
 
 /// A pub trait for types of curves we can transform to and from coefficients
 pub trait Coefficient {
@@ -161,7 +161,6 @@ impl ToSegment<3> for ConicCoeff {
         [Point(p0), Point(p1), Point(p2)]
     }
 }
-
 
 // TODO: Figure out if this is a thing. GPT-3 came up with it, "cubic conics" may not even be useful.
 

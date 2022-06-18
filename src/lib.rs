@@ -9,6 +9,6 @@ pub use p3d::{Point3, Point3Like};
 mod types;
 pub use types::*;
 
-pub mod cu2qu;
 pub mod co2qu;
+pub mod cu2qu;
 pub mod qu2cu;

@@ -11,12 +11,12 @@ mod eval;
 mod p3d;
 pub use pow2::{BelowQuadTolerance, QuadPowerOf2};
 
-use crate::point;
-use crate::types::{QuadSpline, Point};
 use crate::p3d::Point3Like;
+use crate::point;
+use crate::types::{Point, QuadSpline};
 
-use log;
 use glifparser::PointLike;
+use log;
 
 use std::cmp;
 
@@ -34,12 +34,17 @@ pub struct Conic {
     pub control: Point,
     /// The weight of the conic. If _w_==1, parabolic. If _w_ < 1, elliptical. If _w_ > 1,
     /// hyperbolic.
-    pub weight: f32
+    pub weight: f32,
 }
 
 impl Conic {
     pub fn new(start: Point, control: Point, end: Point, weight: f32) -> Self {
-        Self { start, end, control, weight }
+        Self {
+            start,
+            end,
+            control,
+            weight,
+        }
     }
 }
 
@@ -51,7 +56,7 @@ pub enum ConicKind {
     /// If _w_ is exactly equal (within ε) to 1.
     Parabola,
     /// If _w_ is greater than 1.
-    Hyperbola
+    Hyperbola,
 }
 
 impl Conic {
@@ -59,7 +64,7 @@ impl Conic {
         match self.weight.partial_cmp(&1.0).expect("Failed to compare weight with 1.0") {
             cmp::Ordering::Less => ConicKind::Ellipse,
             cmp::Ordering::Equal => ConicKind::Parabola,
-            cmp::Ordering::Greater => ConicKind::Hyperbola
+            cmp::Ordering::Greater => ConicKind::Hyperbola,
         }
     }
 }
@@ -69,14 +74,15 @@ impl Conic {
         let quad_count = 1 << *pow2;
         let mut quads: QuadSpline = vec![[Point::default(); 3]; quad_count];
         let conics = self.subdivide(*pow2);
-        if *pow2 == MAX_QUAD_POW2 {  // If an extreme weight generates many quads ...
+        if *pow2 == MAX_QUAD_POW2 {
+            // If an extreme weight generates many quads ...
             let line_start = conics[0].start;
             let line_end = conics[0].end;
             let quad_start = conics[1].start;
             if line_start == line_end && quad_start == conics[1].control {
                 quads[0][1] = line_start;
                 quads[0][2] = line_start;
-                quads[1][0] = line_start;  // set ctrl == end to make lines
+                quads[1][0] = line_start; // set ctrl == end to make lines
                 quads[1][2] = conics[1].end;
                 *pow2 = 1;
                 return quads;
@@ -87,7 +93,7 @@ impl Conic {
             quads[i] = [conic.start, conic.control, conic.end];
         }
         for quad in quads.iter_mut() {
-            if quad.iter().any(|p|!f32::from(p.x()).is_finite() || !f32::from(p.y()).is_finite()) {
+            if quad.iter().any(|p| !f32::from(p.x()).is_finite() || !f32::from(p.y()).is_finite()) {
                 // if we generated a non-finite, pin ourselves to the middle of the hull,
                 // as our first and last are already on the first/last pts of the hull.
                 for i in 1..3 {

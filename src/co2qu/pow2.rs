@@ -1,5 +1,5 @@
-use super::Conic;
 use super::consts::MAX_QUAD_POW2;
+use super::Conic;
 
 macro_rules! as_quad_error_setup {
     ($conic:expr, $s:ident, $c:ident, $e:ident, $w:ident, $a:ident, $k:ident, $x:ident, $y:ident) => {
@@ -12,7 +12,7 @@ macro_rules! as_quad_error_setup {
         $k = $a / (4f32 * (2f32 + $a));
         $x = f32::from($k * ($s.x() - 2f32 * $c.x() + $e.x()));
         $y = f32::from($k * ($s.y() - 2f32 * $c.y() + $e.y()));
-    }
+    };
 }
 
 /// Trait for calculating whether or not a value is below the user-provided quadratic tolerance.

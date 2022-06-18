@@ -1,7 +1,7 @@
-use glifparser::PointLike;
 use super::Conic;
-use crate::{Point, point};
 use crate::types::DerivativeCoefficients;
+use crate::{point, Point};
+use glifparser::PointLike;
 
 impl DerivativeCoefficients<3> for Conic {
     /// Compute the coefficients of the derivative of the conic.

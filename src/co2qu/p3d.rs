@@ -1,7 +1,7 @@
 use glifparser::PointLike;
 
 use crate::p3d::{Point3, Point3Like};
-use crate::{Point, point};
+use crate::{point, Point};
 
 #[inline]
 pub fn ratquad_map<PL: PointLike>(src: &[PL; 3], w: f32) -> [Point3; 3] {

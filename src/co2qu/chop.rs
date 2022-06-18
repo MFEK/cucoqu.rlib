@@ -2,12 +2,15 @@ use super::*;
 use crate::types::DerivativeCoefficients;
 
 use std::f32::EPSILON;
-pub const EPSILON_F32: f32 = EPSILON*10.;
+pub const EPSILON_F32: f32 = EPSILON * 10.;
 
 use num_traits::Float;
 
 /// The trait allowing the curve to be subdivided into smaller pieces.
-pub trait Chop where Self: Clone + Default + Sized {
+pub trait Chop
+where
+    Self: Clone + Default + Sized,
+{
     /// divide curve into two at t
     fn chop_at(&self, t: f32, dst: &mut [Self; 2]) -> bool;
     /// get a subsection of the curve from t1…t2
@@ -34,7 +37,11 @@ impl Chop for Conic {
         let root = Float::sqrt(tmp2[1].z());
         dst[0].weight = (tmp2[0].z() / root).into();
         dst[1].weight = (tmp2[1].z() / root).into();
-        return dst.into_iter().all(|c|[&c.start, &c.control, &c.end].into_iter().all(|p3|f32::from(p3.x()).is_finite() && f32::from(p3.y()).is_finite()));
+        return dst.into_iter().all(|c| {
+            [&c.start, &c.control, &c.end]
+                .into_iter()
+                .all(|p3| f32::from(p3.x()).is_finite() && f32::from(p3.y()).is_finite())
+        });
     }
 
     fn chop_at_t2(&self, t1: f32, t2: f32) -> Self {
@@ -77,8 +84,8 @@ impl Chop for Conic {
         }
         let dst = self.chop();
         let mut ret = Vec::new();
-        ret.extend(dst[0].subdivide(level-1));
-        ret.extend(dst[1].subdivide(level-1));
+        ret.extend(dst[0].subdivide(level - 1));
+        ret.extend(dst[1].subdivide(level - 1));
         ret
     }
 }
