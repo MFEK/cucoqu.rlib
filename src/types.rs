@@ -22,9 +22,7 @@ pub type Cubic = [Point; 4];
 /// [quad-bezier]: https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Quadratic_curves
 pub type Quad = [Point; 3];
 // Bézier paths
-/// A [cubic spline][cubic-spline].
-///
-/// [cubic-spline]: https://en.wikipedia.org/wiki/Cubic_Hermite_spline
+/// A cubic spline.
 pub type CubicSpline = Vec<Cubic>;
 /// A [quadratic spline][quad-spline].
 ///

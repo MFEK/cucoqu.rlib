@@ -105,6 +105,7 @@ impl Conic {
     }
 }
 
+/// Convert a “conic” (rational quadratic) Bézier curve to N quadratic spline segments.
 impl Conic {
     pub fn as_quads(&self, tol: f32) -> QuadSpline {
         let mut pow2 = self.quad_pow2(tol);

@@ -2,7 +2,7 @@
 
 use glifparser::PointLike;
 
-/// Trait for quadratic Bézier curve approximation.
+/// Trait for exact cubic Bézier curve generation from quadratic.
 pub trait QuadToCubic<QCO: Default, const N: usize> {
     fn quad_to_cubic(self) -> [QCO; N];
 }
