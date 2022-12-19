@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"trait":[["QuadToCubic","Trait for exact cubic Bézier curve generation from quadratic."]]};
