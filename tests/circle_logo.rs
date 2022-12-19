@@ -1,12 +1,8 @@
 use cucoqu::co2qu::Conic;
 use cucoqu::point;
-use cucoqu::qu2cu::QuadToCubic;
 use cucoqu::Point;
 use cucoqu::QuadSpline;
-use cucoqu::{Point3, Point3Like};
 use glifparser::PointLike;
-
-use std::ops::Div;
 
 fn expected_result() -> Vec<Vec<[cucoqu::Point; 3]>> {
     vec![
